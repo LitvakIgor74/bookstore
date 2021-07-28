@@ -1,0 +1,22 @@
+version: "3.8"
+
+
+services: 
+    web:
+        build: .
+        volumes:
+            - .:/bookstore
+        ports: 
+            - 8000:8000
+        command: pipenv run python /bookstore/manage.py runserver 0.0.0.0:8000
+        depends_on: 
+            - db
+    db:
+        image: postgres:13.3
+        environment: 
+            - "POSTGRES_HOST_AUTH_METHOD=trust"
+        volumes:
+            - django_data:/var/lib/postgresql/data 
+
+volumes:
+    django_data:
